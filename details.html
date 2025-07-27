@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Manaa - Item Details</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="header">
+    <h1>Manaa Tiffins</h1>
+    <p>Hot, Homemade & Heartfelt Tiffins!</p>
+  </div>
+
+  <div class="details-container">
+    <img id="item-image" src="" alt="Item Image"/>
+    <h2 id="item-name"></h2>
+    <p id="item-description"></p>
+    <p id="item-price"></p>
+
+    <!-- ✅ Add to Cart button placed inside details-container below price -->
+    <button class="cart-btn" onclick="addToCart()">Add to Cart</button>
+  </div>
+
+  <!-- ✅ View Cart Button fixed at top-right -->
+  <button class="cart-top-btn cart-btn" onclick="window.location.href='cart.html'">🛒 View Cart</button>
+
+  <footer class="footer">
+    <p>&copy; 2025 Manaa Tiffins. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const params = new URLSearchParams(window.location.search);
+    const item = params.get("item");
+
+    const itemData = {
+      "upma": {
+        name: "Rava Upma",
+        image: "upma.jpg",
+        description: "Soft, spicy and satisfying Rava Upma, made with ghee-roasted semolina and vegetables.",
+        price: "₹40"
+      },
+      "dosa": {
+        name: "Crispy Dosa",
+        image: "dosa.jpg",
+        description: "Golden and crispy dosa served with coconut chutney and hot sambar.",
+        price: "₹50"
+      },
+      "pongal": {
+        name: "Ven Pongal",
+        image: "pongal.jpg",
+        description: "Melt-in-mouth Pongal with ghee, cashews, and pepper spices for perfect mornings.",
+        price: "₹45"
+      },
+      "idli": {
+        name: "Soft Idli",
+        image: "idli.jpg",
+        description: "Fluffy idlis served with coconut chutney and spicy sambar. A classic breakfast choice!",
+        price: "₹30"
+      }
+    };
+
+    if (itemData[item]) {
+      document.getElementById("item-image").src = itemData[item].image;
+      document.getElementById("item-name").textContent = itemData[item].name;
+      document.getElementById("item-description").textContent = itemData[item].description;
+      document.getElementById("item-price").textContent = "Price: " + itemData[item].price;
+    } else {
+      document.querySelector(".details-container").innerHTML = "<p>Item not found.</p>";
+    }
+
+    function addToCart() {
+      const cart = JSON.parse(localStorage.getItem("cartItems")) || [];
+      const currentItem = itemData[item];
+      cart.push(currentItem);
+      localStorage.setItem("cartItems", JSON.stringify(cart));
+      alert("Item added to cart!");
+    }
+  </script>
+</body>
+</html>

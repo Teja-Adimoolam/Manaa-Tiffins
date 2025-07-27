@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Cart - Manaa Tiffins</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="header">
+    <h1>Your Cart</h1>
+    <p>Review your order before placing it</p>
+  </div>
+
+  <div id="cart-container" class="menu-container"></div>
+
+  <div style="text-align: center; margin: 20px;">
+    <h3 id="total-price">Total: ₹0</h3>
+  </div>
+  <button class="cart-btn" onclick="placeOrder()">Place Order</button>
+  <button class="cart-btn" onclick="clearCart()">Clear Cart</button>
+
+  <script>
+    const cartContainer = document.getElementById("cart-container");
+    const cartItems = JSON.parse(localStorage.getItem("cartItems")) || [];
+
+    let total = 0;
+
+    if (cartItems.length === 0) {
+      cartContainer.innerHTML = "<p>No items in cart.</p>";
+    } else {
+      cartItems.forEach((item, index) => {
+        total += parseInt(item.price.replace("₹", ""));
+        const div = document.createElement("div");
+        div.className = "menu-item";
+        div.innerHTML = `
+          <img src="${item.image}" />
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+          <p>${item.price}</p>
+          <button class="cart-btn" onclick="removeItem(${index})">Remove</button>
+        `;
+        cartContainer.appendChild(div);
+      });
+
+      document.getElementById("total-price").textContent = "Total: ₹" + total;
+    }
+
+    function removeItem(index) {
+      cartItems.splice(index, 1);
+      localStorage.setItem("cartItems", JSON.stringify(cartItems));
+      location.reload();
+    }
+
+    function clearCart() {
+      localStorage.removeItem("cartItems");
+      location.reload();
+    }
+
+    function placeOrder() {
+      const orders = JSON.parse(localStorage.getItem("orderHistory")) || [];
+      orders.push(...cartItems);
+      localStorage.setItem("orderHistory", JSON.stringify(orders));
+      localStorage.removeItem("cartItems");
+      alert("Order placed successfully!");
+      window.location.href = "orders.html";
+    }
+  </script>
+</body>
+</html>

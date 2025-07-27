@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Your Orders - Manaa Tiffins</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <div class="header">
+    <h1>Your Orders</h1>
+    <p>Thanks for ordering! Here's your recent tiffin list 🍽</p>
+  </div>
+
+  <div id="orders-container" class="menu-container"></div>
+
+  <div style="text-align: center; margin: 30px;">
+    <button class="cart-btn" onclick="window.location.href='menu.html'">⬅ Back to Menu</button>
+  </div>
+
+  <footer class="footer">
+    <p>&copy; 2025 Manaa Tiffins. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const ordersContainer = document.getElementById("orders-container");
+    const orders = JSON.parse(localStorage.getItem("orderHistory")) || [];
+
+    if (orders.length === 0) {
+      ordersContainer.innerHTML = "<p>You haven't placed any orders yet.</p>";
+    } else {
+      orders.forEach((item, index) => {
+        const div = document.createElement("div");
+        div.className = "menu-item";
+        div.innerHTML = `
+          <img src="${item.image}" alt="${item.name}" />
+          <h3>${item.name}</h3>
+          <p>${item.description}</p>
+          <p>${item.price}</p>
+        `;
+        ordersContainer.appendChild(div);
+      });
+    }
+  </script>
+</body>
+</html>
